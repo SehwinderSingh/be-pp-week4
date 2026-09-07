@@ -1,8 +1,9 @@
-const user = require("../models/userModel.js");
+const User = require("../models/userModel.js");
 
 const getAllUsers = (req, res) => {
-  res.json(user.getAll());
+  res.json(User.getAll());
 };
+
 const createUser = (req, res) => {
   const {
     name,
@@ -13,7 +14,8 @@ const createUser = (req, res) => {
     date_of_birth,
     membership_status,
   } = req.body;
-  const newUser = user.create(
+
+  const newUser = User.addOne(
     name,
     email,
     password,
@@ -22,41 +24,45 @@ const createUser = (req, res) => {
     date_of_birth,
     membership_status,
   );
-  if (newUser) {
-    res.status(201).json(newUser);
-  } else {
-    res.status(400).json({ error: "Failed to create user" });
+
+  if (!newUser) {
+    return res.status(400).json({ error: "Failed to create user" });
   }
+
+  res.status(201).json(newUser);
 };
 
 const getUserById = (req, res) => {
-  const userId = req.params.userId;
-  const foundUser = user.findById(userId);
-  if (foundUser) {
-    res.json(foundUser);
-  } else {
-    res.status(404).json({ error: "User not found" });
+  const { userId } = req.params;
+  const foundUser = User.findById(userId);
+
+  if (!foundUser) {
+    return res.status(404).json({ error: "User not found" });
   }
+
+  res.json(foundUser);
 };
+
 const updateUserById = (req, res) => {
-  const userId = req.params.userId;
-  const updatedData = req.body;
-  const updatedUser = user.updateOneById(userId, updatedData);
-  if (updatedUser) {
-    res.json(updatedUser);
-  } else {
-    res.status(404).json({ error: "User not found" });
+  const { userId } = req.params;
+  const updatedUser = User.updateOneById(userId, req.body);
+
+  if (!updatedUser) {
+    return res.status(404).json({ error: "User not found" });
   }
+
+  res.json(updatedUser);
 };
 
 const deleteUserById = (req, res) => {
-  const userId = req.params.userId;
-  const isDeleted = user.deleteOneById(userId);
-  if (isDeleted) {
-    res.json({ message: "User deleted successfully" });
-  } else {
-    res.status(404).json({ error: "User not found" });
+  const { userId } = req.params;
+  const isDeleted = User.deleteOneById(userId);
+
+  if (!isDeleted) {
+    return res.status(404).json({ error: "User not found" });
   }
+
+  res.status(204).send();
 };
 
 module.exports = {
