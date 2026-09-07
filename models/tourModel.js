@@ -19,8 +19,26 @@ const getAll = () => {
   return tourArray;
 };
 
-const addOne = (name, info, image, price, duration, groupSize, rating, availability) => {
-  if (!name || !info || !image || !price || !duration || !groupSize || rating === undefined || availability === undefined) {
+const addOne = (
+  name,
+  info,
+  image,
+  price,
+  duration,
+  groupSize,
+  rating,
+  availability,
+) => {
+  if (
+    !name ||
+    !info ||
+    !image ||
+    !price ||
+    !duration ||
+    !groupSize ||
+    rating === undefined ||
+    availability === undefined
+  ) {
     return false;
   }
   const newTour = {
@@ -53,7 +71,8 @@ const updateOneById = (id, updatedData) => {
     if (updatedData.duration) tour.duration = updatedData.duration;
     if (updatedData.groupSize) tour.groupSize = updatedData.groupSize;
     if (updatedData.rating !== undefined) tour.rating = updatedData.rating;
-    if (updatedData.availability !== undefined) tour.availability = updatedData.availability;
+    if (updatedData.availability !== undefined)
+      tour.availability = updatedData.availability;
     return tour;
   }
   return false;
@@ -78,7 +97,7 @@ if (require.main === module) {
     "5 days",
     "Max 12 people",
     4.8,
-    true
+    true,
   );
   console.log(result);
   result = addOne(
@@ -89,7 +108,7 @@ if (require.main === module) {
     "7 days",
     "Max 10 people",
     4.5,
-    true
+    true,
   );
   console.log(result);
   console.log("getAll called:", getAll());
@@ -105,7 +124,7 @@ if (require.main === module) {
       groupSize: "Max 8 people",
       rating: 4.7,
       availability: false,
-    })
+    }),
   );
   console.log("findById called after item updated:", findById(2));
   console.log("deleteById called:", deleteOneById(2));
